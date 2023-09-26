@@ -7,34 +7,52 @@ let stocks = {
   toppings : ["chocolate", "peanuts"]
 };
 
-let is_shop_open = true;
+let is_shop_open = false;
 
-let order = (time, work) => {
+function time(ms){
+  return new Promise( (resolve, reject)=>{
+    if(is_shop_open){
+      setTimeout(resolve, ms)
+    } else {
+      reject(console.log('Shop is closed'))
+    }
+  })
+};
 
-    return new Promise((resolve, reject)=>{
-      if (is_shop_open){
-        setTimeout(()=>{
-          resolve(work())
-        },time)
-      }
-      else{
-        reject(console.log("Our shop is closed"))
-      }
-    } )
-}
+async function kitchen (){
+  try{
+    await time(2000);
+    console.log(`${stocks.Fruits[1]} has been selected.`);
 
-order(2000, ()=>console.log(`${stocks.Fruits[0]} was selected.`))
+    console.log("Production started...");
 
-.then(()=> {
-  return order(0, ()=> console.log("Production has started."))})
+    await time(2000);
+    console.log("Fruit has been cut...");
 
-.then(()=>{
-  return order(2000, ()=>console.log("The fruit was chopped..."))})
+    await time(1000);
+    console.log(`${stocks.liquid[0]} and ${stocks.liquid[1]} has been selected...`);
 
-.then(()=>{
-  return order(1000, ()=>console.log(`${stocks.Fruits[0]} was selected.`))})
+    await time(1000);
+    console.log("Machine started...");
 
-  
+    await time(2000);
+    console.log(`Icecream added to ${stocks.holder[2]}`);
 
+    await time(3000);
+    console.log(`${stocks.toppings[0]} has been added`);
 
+    await time(2000);
+    console.log("Icecream has been served. Thank you")   
 
+  }
+  catch(error){
+    console.log("Customer left!!!", Error)
+
+  }
+  finally{
+    console.log("Day ended, shop is closed.")
+
+  }
+};
+
+kitchen();
